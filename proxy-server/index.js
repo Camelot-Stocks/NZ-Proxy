@@ -1,8 +1,7 @@
 require('newrelic');
 const express = require('express');
-const url = require('url');
-const axios = require('axios');
 const fancy = require('fancy-log');
+const proxy = require('http-proxy-middleware');
 
 const app = express();
 const port = 3000;
@@ -61,25 +60,10 @@ app.get('/arrows_black.png', (req, res) => {
   res.redirect('http://34.214.68.82/arrows_black.png');
 });
 
-const graphServiceUrl = 'http://localhost:3001';
-app.get('/api/graph/stockHistory', async (req, res) => {
-  try {
-    const serviceUrl = url.format({
-      pathname: `${graphServiceUrl}/api/graph/stockHistory`,
-      query: req.query,
-    });
-    const serviceRes = await axios.get(serviceUrl);
-    const { status, data } = serviceRes;
-    res.status(status).json(data);
-  } catch (error) {
-    fancy(error);
-    res.status(500).end('Server could not retrieve stockHistory');
-  }
-});
+const graphServiceHost = 'http://localhost:3001';
+const graphServiceRoute = '/api/graph/stockHistory';
+app.use(graphServiceRoute, proxy({ target: graphServiceHost }));
 
-app.post('/api/graph/stockHistory', (req, res) => {
-  res.redirect(`${graphServiceUrl}/api/graph/stockHistory`);
-});
 
 app.get('/graph/img/:photo', (req, res) => {
   res.redirect(`http://54.153.91.76/graph/img/${path.basename(req.url)}`);
