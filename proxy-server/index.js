@@ -1,5 +1,6 @@
 require('newrelic');
 const express = require('express');
+const url = require('url');
 
 const app = express();
 const port = 3000;
@@ -59,8 +60,11 @@ app.get('/arrows_black.png', (req, res) => {
 });
 
 
-app.get('api/graph/stockHistory', (req, res) => {
-  res.redirect('localhost:3001/api/graph/stockHistory');
+app.get('/api/graph/stockHistory', (req, res) => {
+  res.redirect(url.format({
+    pathname: 'http://localhost:3001/api/graph/stockHistory',
+    query: req.query,
+  }));
 });
 
 app.get('/graph/img/:photo', (req, res) => {
