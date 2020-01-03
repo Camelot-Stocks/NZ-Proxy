@@ -10,6 +10,10 @@ const cors = require('cors');
 app.use('/', express.static(path.join(__dirname)));
 app.use(cors());
 
+const graphServiceHost = 'http://localhost:3001';
+const graphServiceRoute = '/api/graph/stockHistory';
+app.use(graphServiceRoute, proxy({ target: graphServiceHost }));
+
 app.get('/about/getData', (req, res) => {
   const id = req.params.id || 1;
   res.redirect(`http://13.52.245.200/about/getData/?id=${id}`);
@@ -32,7 +36,6 @@ app.get('/earnings/getData', (req, res) => {
 app.get('/news/getData', (req, res) => {
   res.redirect('http://54.193.67.89/news/getData');
 });
-
 
 app.get('/tradestock/api', (req, res) => {
   const id = req.params.id || 1;
@@ -58,10 +61,6 @@ app.get('/arrows.png', (req, res) => {
 app.get('/arrows_black.png', (req, res) => {
   res.redirect('http://34.214.68.82/arrows_black.png');
 });
-
-const graphServiceHost = 'http://localhost:3001';
-const graphServiceRoute = '/api/graph/stockHistory';
-app.use(graphServiceRoute, proxy({ target: graphServiceHost }));
 
 app.get('/graph/img/:photo', (req, res) => {
   res.redirect(`http://54.153.91.76/graph/img/${path.basename(req.url)}`);
