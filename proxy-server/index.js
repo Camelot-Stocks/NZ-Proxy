@@ -67,6 +67,10 @@ app.get('/api/graph/stockHistory', (req, res) => {
   }));
 });
 
+app.post('/api/graph/stockHistory', (req, res) => {
+  res.redirect('http://localhost:3001/api/graph/stockHistory');
+});
+
 app.get('/graph/img/:photo', (req, res) => {
   res.redirect(`http://54.153.91.76/graph/img/${path.basename(req.url)}`);
 });
@@ -79,4 +83,4 @@ app.post('/updateLineColors', (req, res) => {
   res.end();
 });
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(port, () => console.log(`server listening on port ${port}`));
