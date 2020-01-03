@@ -1,5 +1,6 @@
 require('newrelic');
 const express = require('express');
+const proxy = require('http-proxy-middleware');
 
 const app = express();
 const port = 3000;
@@ -8,6 +9,10 @@ const cors = require('cors');
 
 app.use('/', express.static(path.join(__dirname)));
 app.use(cors());
+
+const graphServiceHost = 'http://localhost:3001';
+const graphServiceRoute = '/api/graph/stockHistory';
+app.use(graphServiceRoute, proxy({ target: graphServiceHost }));
 
 app.get('/about/getData', (req, res) => {
   const id = req.params.id || 1;
@@ -31,7 +36,6 @@ app.get('/earnings/getData', (req, res) => {
 app.get('/news/getData', (req, res) => {
   res.redirect('http://54.193.67.89/news/getData');
 });
-
 
 app.get('/tradestock/api', (req, res) => {
   const id = req.params.id || 1;
@@ -58,11 +62,6 @@ app.get('/arrows_black.png', (req, res) => {
   res.redirect('http://34.214.68.82/arrows_black.png');
 });
 
-
-app.get('api/graph/stockHistory', (req, res) => {
-  res.redirect('localhost:3001/api/graph/stockHistory');
-});
-
 app.get('/graph/img/:photo', (req, res) => {
   res.redirect(`http://54.153.91.76/graph/img/${path.basename(req.url)}`);
 });
@@ -75,4 +74,4 @@ app.post('/updateLineColors', (req, res) => {
   res.end();
 });
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(port, () => console.log(`server listening on port ${port}`));
