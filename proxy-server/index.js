@@ -1,6 +1,5 @@
 require('newrelic');
 const express = require('express');
-const fancy = require('fancy-log');
 const proxy = require('http-proxy-middleware');
 
 const app = express();
@@ -63,7 +62,6 @@ app.get('/arrows_black.png', (req, res) => {
 const graphServiceHost = 'http://localhost:3001';
 const graphServiceRoute = '/api/graph/stockHistory';
 app.use(graphServiceRoute, proxy({ target: graphServiceHost }));
-
 
 app.get('/graph/img/:photo', (req, res) => {
   res.redirect(`http://54.153.91.76/graph/img/${path.basename(req.url)}`);
