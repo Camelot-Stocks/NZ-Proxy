@@ -58,8 +58,8 @@ app.get('/arrows_black.png', (req, res) => {
 });
 
 
-app.get('/graph/getStocks', (req, res) => {
-  res.redirect('http://54.153.91.76/graph/getStocks');
+app.get('api/graph/stockHistory', (req, res) => {
+  res.redirect('localhost:/api/graph/stockHistory');
 });
 
 app.get('/graph/img/:photo', (req, res) => {
