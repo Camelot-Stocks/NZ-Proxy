@@ -1,6 +1,7 @@
 require('newrelic');
 const express = require('express');
 const url = require('url');
+const axios = require('axios');
 
 const app = express();
 const port = 3000;
@@ -59,16 +60,24 @@ app.get('/arrows_black.png', (req, res) => {
   res.redirect('http://34.214.68.82/arrows_black.png');
 });
 
-
-app.get('/api/graph/stockHistory', (req, res) => {
-  res.redirect(url.format({
-    pathname: 'http://localhost:3001/api/graph/stockHistory',
-    query: req.query,
-  }));
+const graphServiceUrl = 'http://localhost:3001';
+app.get('/api/graph/stockHistory', async (req, res) => {
+  try {
+    const serviceUrl = url.format({
+      pathname: `${graphServiceUrl}/api/graph/stockHistory`,
+      query: req.query,
+    });
+    const serviceRes = await axios.get(serviceUrl);
+    debugger;
+    const { status, data } = serviceRes;
+    res.status(status).end(data);
+  } catch (error) {
+    res.status(500).end('Server could not retrieve stockHistory');
+  }
 });
 
 app.post('/api/graph/stockHistory', (req, res) => {
-  res.redirect('http://localhost:3001/api/graph/stockHistory');
+  res.redirect(`${graphServiceUrl}/api/graph/stockHistory`);
 });
 
 app.get('/graph/img/:photo', (req, res) => {
