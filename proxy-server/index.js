@@ -59,7 +59,7 @@ app.get('/arrows_black.png', (req, res) => {
 
 
 app.get('api/graph/stockHistory', (req, res) => {
-  res.redirect('localhost:/api/graph/stockHistory');
+  res.redirect('localhost:3001/api/graph/stockHistory');
 });
 
 app.get('/graph/img/:photo', (req, res) => {
