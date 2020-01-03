@@ -2,6 +2,7 @@ require('newrelic');
 const express = require('express');
 const url = require('url');
 const axios = require('axios');
+const fancy = require('fancy-log');
 
 const app = express();
 const port = 3000;
@@ -68,10 +69,10 @@ app.get('/api/graph/stockHistory', async (req, res) => {
       query: req.query,
     });
     const serviceRes = await axios.get(serviceUrl);
-    debugger;
     const { status, data } = serviceRes;
-    res.status(status).end(data);
+    res.status(status).json(data);
   } catch (error) {
+    fancy(error);
     res.status(500).end('Server could not retrieve stockHistory');
   }
 });
