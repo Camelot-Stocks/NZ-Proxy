@@ -73,5 +73,5 @@ app.post('/updateLineColors', (req, res) => {
   res.end();
 });
 
-const port = process.env.NODE_ENV === 'production' ? 80 : 3000;
+const port = 3000;
 app.listen(port, () => console.log(`server listening on port ${port}`));
