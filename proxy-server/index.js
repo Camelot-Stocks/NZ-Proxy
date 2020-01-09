@@ -3,14 +3,13 @@ const express = require('express');
 const proxy = require('http-proxy-middleware');
 
 const app = express();
-const port = 3000;
 const path = require('path');
 const cors = require('cors');
 
 app.use('/', express.static(path.join(__dirname)));
 app.use(cors());
 
-const graphServiceHost = 'http://localhost:3001';
+const graphServiceHost = process.env.NODE_ENV === 'production' ? 'http://13.56.120.129' : 'http://localhost:3001';
 const graphServiceRoute = '/api/graph/stockHistory';
 app.use(graphServiceRoute, proxy({ target: graphServiceHost }));
 
@@ -74,4 +73,5 @@ app.post('/updateLineColors', (req, res) => {
   res.end();
 });
 
+const port = process.env.NODE_ENV === 'production' ? 80 : 3000;
 app.listen(port, () => console.log(`server listening on port ${port}`));
